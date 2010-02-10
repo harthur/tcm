@@ -1,0 +1,144 @@
+<style>
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+#create-heading {
+  margin-bottom: 20px;
+}
+
+td {
+  padding-top: 12px;
+  padding-right: 4px;
+}
+
+tr:not(#steps-row) td:nth-of-type(2) {
+  padding-left: 24px;
+}
+
+#title-input {
+  width: 400px;
+}
+
+#steps-row div {
+  margin-bottom: 10px;
+}
+
+#add-step {
+  padding-bottom: 12px;
+}
+
+#container {
+  margin-top: 20px;
+  margin-left: 20%;
+  font-family: Arial, sans-serif;
+}
+
+#steps {
+  vertical-align: top;
+}
+
+.step-number {
+  vertical-align: top;
+  margin-right: 0px;
+}
+
+#add-step {
+  vertical-align: bottom;
+}
+
+.step-input {
+  width: 300px;
+  margin-left: 4px;
+  margin-right: 6px;
+}
+
+.expected-input {
+  width: 300px;
+  margin-right: 0px;
+}
+
+.empty {
+  color: #777;
+}
+
+</style>
+<script src="/media/jquery-1.4.1.min.js"></script>
+<script src="/media/jquery.emptytext.js"></script>
+<script src="/media/common.js"></script>
+<script>
+
+$(document).ready(function() {
+  addStep();
+  $('.expected-input').emptyText('what should happen? (optional)');
+});
+
+function addStep() {
+  var num = $("#step-boxes").children().length + 1;
+  $("#step-boxes").append("<div><span class='step-number'>" + num + ". </span>"
+      + "<textarea class='step-input'></textarea>"
+      + "<textarea class='expected-input'></textarea></div>");
+  $("textarea.expected-input").emptyText('');
+  $("#step-boxes>div:last-of-type textarea.expected-input").emptyText('what should happen? (optional)');
+  $("#step-boxes>div:last-of-type textarea.step-input").focus();
+}
+
+function validate() {
+}
+
+function submitTest() {
+  var steps = $.map($(".step-input"), function(i, input) { return $(input).val();});
+  var expected = $.map($(".expected-input"), function(i, input) { return $(input).val();});
+  var tc = {
+    title : $("#title-input").val(),
+    steps : steps,
+    expected_results: expected,
+    product : $("#product").val(),
+    collections : $("#collections").val(),
+    tags : $("#tags").val()
+  }
+  $.post(API + "/testcase", JSON.stringify(tc), function(data) {alert(JSON.stringify(data));}, "json");
+}
+
+</script>
+
+<div id="container">
+<h1 id="create-heading">Create Testcase</h1>
+<table>
+  <tbody>
+    <tr>
+      <td>Title</td>
+      <td><input id="title-input" type="text"></td>
+    </tr>
+    <tr id="steps-row">
+      <td id="steps">Steps</td>
+      <td id="step-boxes">
+      </td>
+      <td id="add-step">
+        <input type="button" value="+" onclick="addStep()"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>Product</td>
+      <td><select id="product"><option>Firefox</option><option>Thunderbird</option></select></td>
+    </tr>
+    <tr class="hidden">
+      <td>Platform</td>
+      <td><select id="platform" type="text"><option>Firefox</option><option>Thunderbird</option></select></td>
+    </tr>
+    <tr>
+      <td>Collections</td>
+      <td><input id="collections" type="text"></td>
+    </tr>
+    <tr>
+      <td>Tags</td>
+      <td><input id="tags" type="text"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><button id="submit" onclick="submitTest()">Create</button></td>
+    </tr>
+  </tbody>
+</table>
+</div>
