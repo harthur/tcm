@@ -1,1 +1,1 @@
-# no Django models yet, just couchdb
+# no Django models yet, just couchdb - see objects.py

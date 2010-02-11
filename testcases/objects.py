@@ -21,6 +21,12 @@ class Testcase():
 
 class Product():
     @staticmethod
+    def create(dict):
+        doc = json.dumps(dict)
+        id = testcases.create(doc)
+        return id
+
+    @staticmethod
     def get(dict):
         if 'id' in dict:
             id = dict['id']
