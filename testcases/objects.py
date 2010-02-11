@@ -1,3 +1,4 @@
+from django.conf import settings
 import tcm.testcases.couches as couches
 import json
 
@@ -23,7 +24,7 @@ class Product():
     @staticmethod
     def create(dict):
         doc = json.dumps(dict)
-        id = testcases.create(doc)
+        id = products.create(doc)
         return id
 
     @staticmethod
@@ -34,6 +35,6 @@ class Product():
             return couches.sanitize(doc)
        #elif 'name' in dict:
         else:
-            return products.view(settings.COUCH_DESIGN + "/by_title")
+            return products.view(settings.COUCH_DESIGN + "/by_name")
              
            

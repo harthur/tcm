@@ -1,69 +1,5 @@
-<style>
-body {
-  padding: 0px;
-  margin: 0px;
-}
-
-#create-heading {
-  margin-bottom: 20px;
-}
-
-td {
-  padding-top: 12px;
-  padding-right: 4px;
-}
-
-tr:not(#steps-row) td:nth-of-type(2) {
-  padding-left: 24px;
-}
-
-#title-input {
-  width: 400px;
-}
-
-#steps-row div {
-  margin-bottom: 10px;
-}
-
-#add-step {
-  padding-bottom: 12px;
-}
-
-#container {
-  margin-top: 20px;
-  margin-left: 20%;
-  font-family: Arial, sans-serif;
-}
-
-#steps {
-  vertical-align: top;
-}
-
-.step-number {
-  vertical-align: top;
-  margin-right: 0px;
-}
-
-#add-step {
-  vertical-align: bottom;
-}
-
-.step-input {
-  width: 300px;
-  margin-left: 4px;
-  margin-right: 6px;
-}
-
-.expected-input {
-  width: 300px;
-  margin-right: 0px;
-}
-
-.empty {
-  color: #777;
-}
-
-</style>
+<link rel="stylesheet" href="/media/common.css">
+<link rel="stylesheet" href="/media/create.css">
 <script src="/media/jquery-1.4.1.min.js"></script>
 <script src="/media/jquery.emptytext.js"></script>
 <script src="/media/common.js"></script>
@@ -125,7 +61,13 @@ function submitTest() {
     </tr>
     <tr class="hidden">
       <td>Platform</td>
-      <td><select id="platform" type="text"><option>Firefox</option><option>Thunderbird</option></select></td>
+      <td>
+        <select id="platform" type="text">
+           {% for row in product.rows %}
+             <option value="{{ row.value.id }}">{{ row.value.name }}</option>
+           {% endfor %}
+        </select>
+      </td>
     </tr>
     <tr>
       <td>Collections</td>

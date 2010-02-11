@@ -17,6 +17,15 @@ views = {
             emit(doc.title, null);
         }
         """)
+    ],
+
+    'products' : [
+        ViewDefinition(settings.COUCH_DESIGN, 'by_name',
+        """
+        function(doc) {
+            emit(doc.name, doc);
+        }
+        """)
     ]
 }
 
