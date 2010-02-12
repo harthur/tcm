@@ -3,11 +3,6 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from tcm.testcases.objects import Product
 
-import tcm.testcases.couches as couches
-import json
-
-testcases = couches.testcases
-
 def create(request):
     if request.method == "GET":
        products = Product.get({})

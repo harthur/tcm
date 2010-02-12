@@ -4,17 +4,23 @@ from couchdb.design import ViewDefinition
 
 SERVER = Server(settings.COUCH_SERVER)
 
-testcases = SERVER['testcases']
-products = SERVER['products']
-
-dbs = {'testcases' : testcases, 'products' : products}
+dbs = {'testcases' : SERVER['testcases'], 'products' : SERVER['products']}
 
 views = {
     'testcases' : [
         ViewDefinition(settings.COUCH_DESIGN, 'by_title',
         """
         function(doc) {
-            emit(doc.title, null);
+            emit(doc.title, doc);
+        }
+        """),
+
+        ViewDefinition(settings.COUCH_DESIGN, 'by_collection',
+        """
+        function(doc) {
+            var collections = doc.collections;
+            for(var i = 0; i < collections.length; i++)
+              emit(doc.collections[i], doc);
         }
         """)
     ],
@@ -28,7 +34,6 @@ views = {
         """)
     ]
 }
-
 
 def sanitize(doc):
     del doc['_id']

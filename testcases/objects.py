@@ -2,39 +2,41 @@ from django.conf import settings
 import tcm.testcases.couches as couches
 import json
 
-testcases = couches.testcases
-products = couches.products
-
-class Testcase():
-    @staticmethod
-    def create(dict):
-        doc = json.dumps(dict)
-        id = testcases.create(doc)
+class Document(object):
+    def create(self, dict):
+        obj = self.defaults.update(dict)
+        doc = json.dumps(obj)
+        id = self.db.create(doc)
         return id
 
-    @staticmethod
-    def get(dict):
-        id = dict['id']
-        doc = testcases[id].copy()
-        couches.sanitize(doc)
-        return doc
-
-
-class Product():
-    @staticmethod
-    def create(dict):
-        doc = json.dumps(dict)
-        id = products.create(doc)
-        return id
-
-    @staticmethod
-    def get(dict):
+    def get(self, dict):
         if 'id' in dict:
             id = dict['id']
-            doc = products[id]
+            doc = self.db[id]
             return couches.sanitize(doc)
-       #elif 'name' in dict:
         else:
-            return products.view(settings.COUCH_DESIGN + "/by_name")
+            return self.db.view(settings.COUCH_DESIGN + "/by_name")
+
+
+class Testcase(Document):
+    db = couches.dbs['testcases']
+    defaults = { 
+        'automated': False,
+        'enabled' : True 
+    }
+
+class Product(Document):
+    db = couches.dbs['products']
+    defaults = { }
+
+
+
+
+# make these classes look static
+Testcase = Testcase()
+Product = Product()
+
+
+
              
            

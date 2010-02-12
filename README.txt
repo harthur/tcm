@@ -1,8 +1,8 @@
-TCM is a Django app. To set it up:
+TCM is a Django app. You will need Python 2.6 as well as the 'couchdb' and 'django' Python modules installed. Then you can set the app up:
 
 python manage.py syncdb
 
-This will initialize the couchdb views and databases
+This will initialize the CouchDB views and databases
 
 python manage.py runserver
 
